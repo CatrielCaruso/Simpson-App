@@ -21,10 +21,13 @@ class BottomNavigationBarScreen extends StatelessWidget {
       bottomNavigationBar: Container(
         height: 70,
         width: double.infinity,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          color: AppStyles.whiteColor,
-          boxShadow: [
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          color: Theme.of(context).colorScheme.primaryContainer,
+          // color: Theme.of(context).brightness == Brightness.light
+          //     ? AppStyles.whiteColor
+          //     : Colors.black,
+          boxShadow: const [
             BoxShadow(
               color: AppStyles.gray500Color,
               spreadRadius: 0.1,
@@ -119,7 +122,7 @@ class _NavigationBarItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             color: isSelected
                 ? AppStyles.lightGreen500Color
-                : AppStyles.whiteColor,
+                : Theme.of(context).colorScheme.primaryContainer,
           ),
           child: Icon(
             isSelected ? selectedIcon : unSelectedIcon,

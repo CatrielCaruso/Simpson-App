@@ -8,12 +8,15 @@ class AppTheme {
       ).copyWith(
         appBarTheme: const AppBarTheme(color: Colors.yellow),
         primaryColor: Colors.yellow,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.whiteColor)
+            .copyWith(primaryContainer: AppStyles.whiteColor),
       );
   ThemeData getDarkTheme() => ThemeData.dark(
         useMaterial3: true,
       ).copyWith(
         appBarTheme: const AppBarTheme(color: AppStyles.lightGreenColor),
         primaryColor: AppStyles.lightGreenColor,
-        colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.lightGreenColor),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.lightGreenColor)
+            .copyWith(primaryContainer: Colors.black),
       );
 }

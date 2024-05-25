@@ -12,8 +12,8 @@ class AppTheme {
   ThemeData getDarkTheme() => ThemeData.dark(
         useMaterial3: true,
       ).copyWith(
-        appBarTheme: const AppBarTheme(color: AppStyles.yellowSimpson),
-        primaryColor: Colors.yellow,
-        colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.yellowSimpson),
+        appBarTheme: const AppBarTheme(color: AppStyles.lightGreenColor),
+        primaryColor: AppStyles.lightGreenColor,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.lightGreenColor),
       );
 }

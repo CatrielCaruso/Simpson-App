@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
@@ -101,7 +103,14 @@ class _CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, SimpsonDetailsScreen.routeName),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SimpsonDetailsScreen(
+            simpson: character,
+          ),
+        ),
+      ),
       child: Container(
         height: 200,
         decoration: const BoxDecoration(
@@ -116,9 +125,39 @@ class _CharacterCard extends StatelessWidget {
             ),
           ],
         ),
-        child: FadeInImage(
-          placeholder: const AssetImage('assets/img/simpson_title.png'),
-          image: NetworkImage(character.image),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Hero(
+                tag: character.index!,
+                child: FadeInImage(
+                  placeholder: const AssetImage('assets/img/simpson_title.png'),
+                  image: NetworkImage(character.image),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 5,
+              top: 5,
+              child: Container(
+                alignment: Alignment.center,
+                width: 20,
+                height: 20,
+                decoration: const BoxDecoration(
+                  color: AppStyles.whiteColor,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.favorite_border,
+                  color: Colors.red,
+                  size: 15,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

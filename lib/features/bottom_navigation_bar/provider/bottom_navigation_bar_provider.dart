@@ -12,11 +12,11 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     const SettingScreen()
   ];
 
-  Widget screenSelected = const SimpsonListScreen();
+  Widget selectedScreen = const SimpsonListScreen();
 
   void onSelectBottomNavigationBar({required int selectedIndex}) {
     selectedIndexNavigationBar = selectedIndex;
-    screenSelected = screens[selectedIndexNavigationBar];
+    selectedScreen = screens[selectedIndexNavigationBar];
     notifyListeners();
   }
 }

@@ -1,19 +1,27 @@
 import 'dart:convert';
 
+import 'package:isar/isar.dart';
+
+part 'simpson_model.g.dart';
+
+@collection
 class SimpsonModel {
-  int? index;
+  Id? isarId;
+  int? id;
   String quote;
   String? quoteTranslatedIntoSpanish;
   String character;
   String image;
   String characterDirection;
+  bool isFavorite;
 
   SimpsonModel(
       {required this.quote,
       required this.character,
       required this.image,
       required this.characterDirection,
-      this.index});
+      this.isFavorite = false,
+      this.id});
 
   factory SimpsonModel.fromRawJson(String str) =>
       SimpsonModel.fromJson(json.decode(str));

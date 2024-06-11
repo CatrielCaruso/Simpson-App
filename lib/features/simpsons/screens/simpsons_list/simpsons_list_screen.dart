@@ -1,38 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
+import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
 
 import '../../../../core/theme/theme.dart';
-import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
+import 'package:simpsons_app/features/simpson_details/screen/simpson_details_screen.dart';
 import 'package:simpsons_app/features/simpsons/providers/simpson_provider.dart';
-import 'package:simpsons_app/features/simpsons/screens/simpson_details/simpson_details_screen.dart';
 
-class SimpsonListScreen extends StatefulWidget {
+class SimpsonListScreen extends StatelessWidget {
   static String routeName = 'simpsonListScreen';
   const SimpsonListScreen({super.key});
 
   @override
-  State<SimpsonListScreen> createState() => _SimpsonListScreenState();
-}
-
-class _SimpsonListScreenState extends State<SimpsonListScreen> {
-  late final simpsonProviderRead = context.read<SimpsonProvider>();
-  late final simpsonProviderWatch = context.watch<SimpsonProvider>();
-  @override
-  void initState() {
-    initData();
-    super.initState();
-  }
-
-  Future<void> initData() async {
-    await simpsonProviderRead.getSimponsList();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    late final simpsonProviderRead = context.read<SimpsonProvider>();
+    late final simpsonProviderWatch = context.watch<SimpsonProvider>();
     return SafeArea(
       child: Scaffold(
         body: simpsonProviderWatch.isLoading
@@ -60,7 +43,7 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
                           const SizedBox(
                             height: 40,
                           ),
-                          _CharacterCard(
+                          _SimpsonCardWidget(
                             character: simpsonProviderRead.characters[index],
                           ),
                           if (index ==
@@ -75,7 +58,7 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _CharacterCard(
+                        _SimpsonCardWidget(
                           character: simpsonProviderRead.characters[index],
                         ),
                         if (index == simpsonProviderRead.characters.length - 1)
@@ -92,8 +75,8 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
   }
 }
 
-class _CharacterCard extends StatelessWidget {
-  const _CharacterCard({
+class _SimpsonCardWidget extends StatelessWidget {
+  const _SimpsonCardWidget({
     Key? key,
     required this.character,
   }) : super(key: key);
@@ -125,39 +108,18 @@ class _CharacterCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Hero(
-                tag: character.index!,
-                child: FadeInImage(
-                  placeholder: const AssetImage('assets/img/simpson_title.png'),
-                  image: NetworkImage(character.image),
-                ),
+        child: Align(
+          alignment: Alignment.center,
+          child: Hero(
+            tag: character.id!,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: FadeInImage(
+                placeholder: const AssetImage('assets/img/simpson_title.png'),
+                image: NetworkImage(character.image),
               ),
             ),
-            Positioned(
-              right: 5,
-              top: 5,
-              child: Container(
-                alignment: Alignment.center,
-                width: 20,
-                height: 20,
-                decoration: const BoxDecoration(
-                  color: AppStyles.whiteColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.favorite_border,
-                  color: Colors.red,
-                  size: 15,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -6,13 +6,17 @@ import 'package:provider/provider.dart';
 import 'core/theme/theme.dart';
 import 'package:simpsons_app/app/routes/app_routes.dart';
 import 'package:simpsons_app/app/service_locator/service_locator.dart';
+import 'package:simpsons_app/core/preference/preference.dart';
 import 'package:simpsons_app/features/bottom_navigation_bar/provider/bottom_navigation_bar_provider.dart';
+import 'package:simpsons_app/features/favorites/provider/favorite_provider.dart';
+import 'package:simpsons_app/features/simpson_details/provider/simpson_details_provider.dart';
 import 'package:simpsons_app/features/simpsons/providers/simpson_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "envs/.env");
   serviceLocatorInit();
+  await Preferences.init();
   runApp(const MyApp());
 }
 
@@ -24,16 +28,24 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => SimpsonProvider(),
+          create: (_) => BottomNavigationBarProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => BottomNavigationBarProvider(),
-        )
+          create: (_) => SimpsonProvider()..getSimponsList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SimpsonDetailsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FavoriteProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Material App',
-        theme: AppTheme().getLightTheme(),
+        theme: Preferences.isLight
+            ? AppTheme().getLightTheme()
+            : AppTheme().getDarkTheme(),
         routes: AppRoutes.routes,
         initialRoute: AppRoutes.initialRoute,
       ),

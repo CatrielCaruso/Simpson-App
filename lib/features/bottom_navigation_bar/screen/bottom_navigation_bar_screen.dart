@@ -19,7 +19,7 @@ class BottomNavigationBarScreen extends StatelessWidget {
       body: bottonNavigationBarProviderWatch
           .screens[bottonNavigationBarProviderWatch.selectedIndexNavigationBar],
       bottomNavigationBar: Container(
-        height: 70,
+        height: 60,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),

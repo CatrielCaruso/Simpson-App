@@ -120,9 +120,8 @@ class _NavigationBarItem extends StatelessWidget {
               : const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: isSelected
-                ? AppStyles.lightGreen500Color
-                : Theme.of(context).colorScheme.primaryContainer,
+            color:
+                isSelected ? AppStyles.lightGreen500Color : Colors.transparent,
           ),
           child: Icon(
             isSelected ? selectedIcon : unSelectedIcon,

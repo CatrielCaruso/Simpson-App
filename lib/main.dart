@@ -9,6 +9,7 @@ import 'package:simpsons_app/app/service_locator/service_locator.dart';
 import 'package:simpsons_app/core/preference/preference.dart';
 import 'package:simpsons_app/features/bottom_navigation_bar/provider/bottom_navigation_bar_provider.dart';
 import 'package:simpsons_app/features/favorites/provider/favorite_provider.dart';
+import 'package:simpsons_app/features/settings/provider/setting_provider.dart';
 import 'package:simpsons_app/features/simpson_details/provider/simpson_details_provider.dart';
 import 'package:simpsons_app/features/simpsons/providers/simpson_provider.dart';
 
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (_) => SettingProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => BottomNavigationBarProvider(),
         ),
         ChangeNotifierProvider(
@@ -40,15 +44,17 @@ class MyApp extends StatelessWidget {
           create: (_) => FavoriteProvider(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Material App',
-        theme: Preferences.isLight
-            ? AppTheme().getLightTheme()
-            : AppTheme().getDarkTheme(),
-        routes: AppRoutes.routes,
-        initialRoute: AppRoutes.initialRoute,
-      ),
+      child: Builder(builder: (context) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Material App',
+          theme: context.watch<SettingProvider>().isLight
+              ? AppTheme().getLightTheme()
+              : AppTheme().getDarkTheme(),
+          routes: AppRoutes.routes,
+          initialRoute: AppRoutes.initialRoute,
+        );
+      }),
     );
   }
 }

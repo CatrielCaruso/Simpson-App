@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:simpsons_app/core/preference/preference.dart';
 
 import 'package:simpsons_app/core/theme/app_styles.dart';
+import 'package:simpsons_app/features/settings/provider/setting_provider.dart';
 import 'package:simpsons_app/features/simpson_details/provider/simpson_details_provider.dart';
+import 'package:simpsons_app/features/simpson_details/widgets/custom_button_widget.dart';
 import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
 
 class SimpsonDetailsScreen extends StatefulWidget {
@@ -24,17 +26,43 @@ class SimpsonDetailsScreen extends StatefulWidget {
 class _SimpsonDetailsScreenState extends State<SimpsonDetailsScreen> {
   late final simpsonProviderRead = context.read<SimpsonDetailsProvider>();
   late final simpsonProviderWatch = context.watch<SimpsonDetailsProvider>();
+  late SettingProvider settingProviderRead = context.read<SettingProvider>();
 
   @override
   void initState() {
-    simpsonProviderRead.initiliazeData(character: widget.simpson);
+    try {
+      simpsonProviderRead.initiliazeData(character: widget.simpson);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+          content: SizedBox(
+            width: double.infinity,
+            child: Text(settingProviderRead.isSpanish
+                ? 'Error al cargar los datos, intentelo más tarde.'
+                : 'Error loading data, please try again later.'),
+          ),
+        ),
+      );
+    }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    SettingProvider watchSettingProvider = context.watch<SettingProvider>();
     return SafeArea(
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(10),
+          child: CustomButtonWidget(
+              title: 'Jugá con tus amigos ', submitFunction: () {}),
+        ),
         body: simpsonProviderWatch.isLoading
             ? const Center(
                 child: CircularProgressIndicator(
@@ -44,8 +72,12 @@ class _SimpsonDetailsScreenState extends State<SimpsonDetailsScreen> {
             : CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    backgroundColor: AppStyles.gray200Color,
-                    foregroundColor: AppStyles.whiteColor,
+                    backgroundColor: watchSettingProvider.isLight
+                        ? AppStyles.gray200Color
+                        : AppStyles.lightGreen500Color,
+                    foregroundColor: watchSettingProvider.isLight
+                        ? Colors.black
+                        : AppStyles.whiteColor,
                     actions: [
                       Container(
                         alignment: Alignment.center,
@@ -105,7 +137,7 @@ class _SimpsonDetailsScreenState extends State<SimpsonDetailsScreen> {
                             Text(
                               widget.simpson.quoteTranslatedIntoSpanish!,
                               style: const TextStyle(fontSize: 20),
-                            )
+                            ),
                           ] else ...[
                             const Text(
                               'Quote:',
@@ -116,7 +148,10 @@ class _SimpsonDetailsScreenState extends State<SimpsonDetailsScreen> {
                               widget.simpson.quote,
                               style: const TextStyle(fontSize: 20),
                             )
-                          ]
+                          ],
+                          const SizedBox(
+                            height: 100,
+                          )
                         ],
                       ),
                     ),

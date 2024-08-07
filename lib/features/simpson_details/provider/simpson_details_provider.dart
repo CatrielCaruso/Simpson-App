@@ -15,14 +15,20 @@ class SimpsonDetailsProvider extends ChangeNotifier {
   bool isLoading = false;
 
   Future<void> initiliazeData({required SimpsonModel character}) async {
-    isLoading = true;
+    try {
+      isLoading = true;
 
-    simpson = character;
-    await isCharacterFavorite(characterId: character.isarId);
-    await traductQuote();
+      simpson = character;
+      await isCharacterFavorite(characterId: character.isarId);
+      await traductQuote();
 
-    isLoading = false;
-    notifyListeners();
+      isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
   }
 
   Future<void> traductQuote() async {

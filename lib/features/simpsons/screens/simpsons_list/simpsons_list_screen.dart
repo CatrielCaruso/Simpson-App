@@ -2,20 +2,56 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
 
 import '../../../../core/theme/theme.dart';
+import 'package:simpsons_app/features/settings/provider/setting_provider.dart';
 import 'package:simpsons_app/features/simpson_details/screen/simpson_details_screen.dart';
+import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
 import 'package:simpsons_app/features/simpsons/providers/simpson_provider.dart';
+import 'package:simpsons_app/features/simpsons/widgets/input_search_widget.dart';
 
-class SimpsonListScreen extends StatelessWidget {
+class SimpsonListScreen extends StatefulWidget {
   static String routeName = 'simpsonListScreen';
   const SimpsonListScreen({super.key});
 
   @override
+  State<SimpsonListScreen> createState() => _SimpsonListScreenState();
+}
+
+class _SimpsonListScreenState extends State<SimpsonListScreen> {
+  late final simpsonProviderRead = context.read<SimpsonProvider>();
+  late final simpsonProviderWatch = context.watch<SimpsonProvider>();
+  late SettingProvider settingProviderRead = context.read<SettingProvider>();
+  late SettingProvider settingProviderWatch = context.watch<SettingProvider>();
+
+  @override
+  void initState() {
+    initializeData();
+    super.initState();
+  }
+
+  Future<void> initializeData() async {
+    try {
+      await simpsonProviderRead.getSimponsList();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+          content: SizedBox(
+            width: double.infinity,
+            child: Text(settingProviderRead.isSpanish
+                ? 'Error al cargar los datos, intentelo más tarde.'
+                : 'Error loading data, please try again later.'),
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    late final simpsonProviderRead = context.read<SimpsonProvider>();
-    late final simpsonProviderWatch = context.watch<SimpsonProvider>();
     return SafeArea(
       child: Scaffold(
         body: simpsonProviderWatch.isLoading
@@ -30,44 +66,66 @@ class SimpsonListScreen extends StatelessWidget {
                   right: 10,
                   left: 10,
                 ),
-                child: MasonryGridView.count(
-                  itemCount: simpsonProviderRead.characters.length,
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  itemBuilder: (context, index) {
-                    if (index == 1) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          _SimpsonCardWidget(
-                            character: simpsonProviderRead.characters[index],
-                          ),
-                          if (index ==
-                              simpsonProviderRead.characters.length - 1)
-                            const SizedBox(
-                              height: 10,
-                            )
-                        ],
-                      );
-                    }
+                child: Column(
+                  children: [
+                    InputSearchWidget(
+                      onSearch: simpsonProviderRead.onSearchClient,
+                      focusNode: simpsonProviderRead.focusNode,
+                      onTapOutside: (event) =>
+                          simpsonProviderRead.focusNode.unfocus(),
+                      hint: settingProviderWatch.isSpanish
+                          ? 'Buscar personaje...'
+                          : 'Search character...',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: MasonryGridView.count(
+                        itemCount: simpsonProviderRead.searchSimpsons.length,
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        itemBuilder: (context, index) {
+                          if (index == 1) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const SizedBox(
+                                  height: 40,
+                                ),
+                                _SimpsonCardWidget(
+                                  character:
+                                      simpsonProviderRead.searchSimpsons[index],
+                                ),
+                                if (index ==
+                                    simpsonProviderRead.searchSimpsons.length -
+                                        1)
+                                  const SizedBox(
+                                    height: 10,
+                                  )
+                              ],
+                            );
+                          }
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _SimpsonCardWidget(
-                          character: simpsonProviderRead.characters[index],
-                        ),
-                        if (index == simpsonProviderRead.characters.length - 1)
-                          const SizedBox(
-                            height: 10,
-                          )
-                      ],
-                    );
-                  },
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              _SimpsonCardWidget(
+                                character:
+                                    simpsonProviderRead.searchSimpsons[index],
+                              ),
+                              if (index ==
+                                  simpsonProviderRead.searchSimpsons.length - 1)
+                                const SizedBox(
+                                  height: 10,
+                                )
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
       ),
@@ -85,6 +143,7 @@ class _SimpsonCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingProvider watchSettingProvider = context.watch<SettingProvider>();
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -96,10 +155,12 @@ class _SimpsonCardWidget extends StatelessWidget {
       ),
       child: Container(
         height: 200,
-        decoration: const BoxDecoration(
-          color: AppStyles.gray200Color,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
+        decoration: BoxDecoration(
+          color: watchSettingProvider.isLight
+              ? AppStyles.gray200Color
+              : AppStyles.lightGreen500Color,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          boxShadow: const [
             BoxShadow(
               color: AppStyles.gray500Color,
               spreadRadius: 0.1,

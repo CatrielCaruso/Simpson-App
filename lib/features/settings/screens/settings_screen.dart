@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-import 'package:simpsons_app/core/preference/preference.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simpsons_app/core/theme/app_styles.dart';
 import 'package:simpsons_app/features/settings/provider/setting_provider.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -20,15 +20,16 @@ class SettingScreen extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(
               height: 50,
             ),
-            const Text(
-              'Cambiar idioma:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              watchSettingProvider.isSpanish
+                  ? 'Cambiar idioma:'
+                  : 'Change language',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 10,
@@ -39,9 +40,9 @@ class SettingScreen extends StatelessWidget {
                 minHeight: 50,
                 cornerRadius: 150,
 
-                activeBgColors: [
-                  [Colors.green[800]!],
-                  [Colors.green[800]!]
+                activeBgColors: const [
+                  [AppStyles.lightGreen500Color],
+                  [AppStyles.lightGreen500Color]
                 ],
                 activeFgColor: Colors.white,
                 inactiveBgColor: Colors.grey,
@@ -68,9 +69,15 @@ class SettingScreen extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            const Text(
-              'Cambiar de modo:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              watchSettingProvider.isSpanish
+                  ? watchSettingProvider.isLight
+                      ? 'Tema: Normal'
+                      : 'Tema: Halloween'
+                  : watchSettingProvider.isLight
+                      ? 'Theme: Normal'
+                      : 'Theme: Halloween',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 10,

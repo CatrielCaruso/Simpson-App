@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           create: (_) => BottomNavigationBarProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => SimpsonProvider()..getSimponsList(),
+          create: (_) => SimpsonProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => SimpsonDetailsProvider(),

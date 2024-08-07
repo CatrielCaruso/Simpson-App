@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/theme/theme.dart';
 import 'package:simpsons_app/features/bottom_navigation_bar/provider/bottom_navigation_bar_provider.dart';
+import 'package:simpsons_app/features/settings/provider/setting_provider.dart';
 
 class BottomNavigationBarScreen extends StatelessWidget {
   static String routeName = 'bottomNavigationBarScreen';
@@ -15,6 +16,7 @@ class BottomNavigationBarScreen extends StatelessWidget {
         context.read<BottomNavigationBarProvider>();
     final bottonNavigationBarProviderWatch =
         context.watch<BottomNavigationBarProvider>();
+    SettingProvider watchSettingProvider = context.watch<SettingProvider>();
     return Scaffold(
       body: bottonNavigationBarProviderWatch
           .screens[bottonNavigationBarProviderWatch.selectedIndexNavigationBar],
@@ -51,7 +53,8 @@ class BottomNavigationBarScreen extends StatelessWidget {
                         0,
                     selectedIcon: Icons.people_alt,
                     unSelectedIcon: Icons.people_alt_outlined,
-                    label: 'Home',
+                    label:
+                        watchSettingProvider.isSpanish ? 'Principal' : 'Home',
                     index: 0,
                   ),
                 ),
@@ -66,7 +69,9 @@ class BottomNavigationBarScreen extends StatelessWidget {
                         1,
                     selectedIcon: Icons.favorite,
                     unSelectedIcon: Icons.favorite_border,
-                    label: 'Favoritos',
+                    label: watchSettingProvider.isSpanish
+                        ? 'Favoritos'
+                        : 'Favourites',
                     index: 1,
                   ),
                 ),
@@ -81,7 +86,8 @@ class BottomNavigationBarScreen extends StatelessWidget {
                         2,
                     selectedIcon: Icons.settings_applications,
                     unSelectedIcon: Icons.settings_applications_sharp,
-                    label: 'Setting',
+                    label:
+                        watchSettingProvider.isSpanish ? 'Ajustes' : 'Setting',
                     index: 2,
                   ),
                 ),
@@ -109,6 +115,7 @@ class _NavigationBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

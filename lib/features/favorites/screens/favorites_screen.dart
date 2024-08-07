@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:simpsons_app/core/theme/app_styles.dart';
 import 'package:simpsons_app/features/favorites/provider/favorite_provider.dart';
+import 'package:simpsons_app/features/settings/provider/setting_provider.dart';
 import 'package:simpsons_app/features/simpson_details/screen/simpson_details_screen.dart';
 import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
 
@@ -72,6 +73,7 @@ class SimpsonFavoriteCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingProvider watchSettingProvider = context.watch<SettingProvider>();
     late final favoriteProviderRead = context.read<FavoriteProvider>();
     return GestureDetector(
       onTap: () => Navigator.push(
@@ -85,10 +87,12 @@ class SimpsonFavoriteCardWidget extends StatelessWidget {
       ),
       child: Container(
         height: 200,
-        decoration: const BoxDecoration(
-          color: AppStyles.gray200Color,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
+        decoration: BoxDecoration(
+          color: watchSettingProvider.isLight
+              ? AppStyles.gray200Color
+              : AppStyles.lightGreen500Color,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          boxShadow: const [
             BoxShadow(
               color: AppStyles.gray500Color,
               spreadRadius: 0.1,

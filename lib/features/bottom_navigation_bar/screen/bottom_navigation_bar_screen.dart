@@ -20,81 +20,89 @@ class BottomNavigationBarScreen extends StatelessWidget {
     return Scaffold(
       body: bottonNavigationBarProviderWatch
           .screens[bottonNavigationBarProviderWatch.selectedIndexNavigationBar],
-      bottomNavigationBar: Container(
-        height: 60,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          color: Theme.of(context).colorScheme.primaryContainer,
-          // color: Theme.of(context).brightness == Brightness.light
-          //     ? AppStyles.whiteColor
-          //     : Colors.black,
-          boxShadow: const [
-            BoxShadow(
-              color: AppStyles.gray500Color,
-              spreadRadius: 0.1,
-              blurRadius: 0.1,
-              offset: Offset(0, 0), // changes position of shadow
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            // height: 60,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(24)),
+              color: Theme.of(context).colorScheme.primaryContainer,
+              // color: Theme.of(context).brightness == Brightness.light
+              //     ? AppStyles.whiteColor
+              //     : Colors.black,
+              boxShadow: const [
+                BoxShadow(
+                  color: AppStyles.gray500Color,
+                  spreadRadius: 0.1,
+                  blurRadius: 0.1,
+                  offset: Offset(0, 0), // changes position of shadow
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => bottonNavigationBarProviderRead
-                      .onSelectBottomNavigationBar(selectedIndex: 0),
-                  child: _NavigationBarItem(
-                    isSelected: bottonNavigationBarProviderWatch
-                            .selectedIndexNavigationBar ==
-                        0,
-                    selectedIcon: Icons.people_alt,
-                    unSelectedIcon: Icons.people_alt_outlined,
-                    label:
-                        watchSettingProvider.isSpanish ? 'Principal' : 'Home',
-                    index: 0,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => bottonNavigationBarProviderRead
+                          .onSelectBottomNavigationBar(selectedIndex: 0),
+                      child: _NavigationBarItem(
+                        isSelected: bottonNavigationBarProviderWatch
+                                .selectedIndexNavigationBar ==
+                            0,
+                        selectedIcon: Icons.people_alt,
+                        unSelectedIcon: Icons.people_alt_outlined,
+                        label: watchSettingProvider.isSpanish
+                            ? 'Principal'
+                            : 'Home',
+                        index: 0,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => bottonNavigationBarProviderRead
-                      .onSelectBottomNavigationBar(selectedIndex: 1),
-                  child: _NavigationBarItem(
-                    isSelected: bottonNavigationBarProviderWatch
-                            .selectedIndexNavigationBar ==
-                        1,
-                    selectedIcon: Icons.favorite,
-                    unSelectedIcon: Icons.favorite_border,
-                    label: watchSettingProvider.isSpanish
-                        ? 'Favoritos'
-                        : 'Favourites',
-                    index: 1,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => bottonNavigationBarProviderRead
+                          .onSelectBottomNavigationBar(selectedIndex: 1),
+                      child: _NavigationBarItem(
+                        isSelected: bottonNavigationBarProviderWatch
+                                .selectedIndexNavigationBar ==
+                            1,
+                        selectedIcon: Icons.favorite,
+                        unSelectedIcon: Icons.favorite_border,
+                        label: watchSettingProvider.isSpanish
+                            ? 'Favoritos'
+                            : 'Favourites',
+                        index: 1,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => bottonNavigationBarProviderRead
-                      .onSelectBottomNavigationBar(selectedIndex: 2),
-                  child: _NavigationBarItem(
-                    isSelected: bottonNavigationBarProviderWatch
-                            .selectedIndexNavigationBar ==
-                        2,
-                    selectedIcon: Icons.settings_applications,
-                    unSelectedIcon: Icons.settings_applications_sharp,
-                    label:
-                        watchSettingProvider.isSpanish ? 'Ajustes' : 'Setting',
-                    index: 2,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => bottonNavigationBarProviderRead
+                          .onSelectBottomNavigationBar(selectedIndex: 2),
+                      child: _NavigationBarItem(
+                        isSelected: bottonNavigationBarProviderWatch
+                                .selectedIndexNavigationBar ==
+                            2,
+                        selectedIcon: Icons.settings_applications,
+                        unSelectedIcon: Icons.settings_applications_sharp,
+                        label: watchSettingProvider.isSpanish
+                            ? 'Ajustes'
+                            : 'Setting',
+                        index: 2,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -115,7 +123,6 @@ class _NavigationBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

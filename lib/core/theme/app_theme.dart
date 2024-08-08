@@ -17,6 +17,6 @@ class AppTheme {
         appBarTheme: const AppBarTheme(color: AppStyles.lightGreenColor),
         primaryColor: AppStyles.lightGreenColor,
         colorScheme: ColorScheme.fromSeed(seedColor: AppStyles.lightGreenColor)
-            .copyWith(primaryContainer: Colors.black),
+            .copyWith(primaryContainer: AppStyles.blackColor),
       );
 }

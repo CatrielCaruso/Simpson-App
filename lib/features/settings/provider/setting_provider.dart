@@ -4,6 +4,7 @@ import 'package:simpsons_app/core/preference/preference.dart';
 class SettingProvider extends ChangeNotifier {
   SettingProvider() {
     isLight = Preferences.isLight;
+    _isSpanish = Preferences.isSpanish;
   }
 
   bool _isLight = true;

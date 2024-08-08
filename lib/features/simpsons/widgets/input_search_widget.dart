@@ -94,7 +94,7 @@ class _InputSearchWidgetState extends State<InputSearchWidget> {
           'assets/img/ic_search.png',
         ),
         contentPadding: const EdgeInsets.only(left: 0),
-        floatingLabelStyle: const TextStyle(color: Colors.black),
+        floatingLabelStyle: const TextStyle(color: AppStyles.blackColor),
         hintText: widget.hint,
         hintStyle: const TextStyle(
             fontSize: 13,

@@ -47,7 +47,7 @@ class SettingScreen extends StatelessWidget {
                 activeFgColor: Colors.white,
                 inactiveBgColor: Colors.grey,
                 inactiveFgColor: Colors.white,
-                initialLabelIndex: readSettingProvider.isSpanish ? 0 : 1,
+                initialLabelIndex: watchSettingProvider.isSpanish ? 0 : 1,
                 // totalSwitches: 2,
                 labels: watchSettingProvider.isSpanish
                     ? const ['Español', 'Inglés']
@@ -86,7 +86,7 @@ class SettingScreen extends StatelessWidget {
               child: ToggleSwitch(
                 minWidth: 90.0,
                 minHeight: 70.0,
-                initialLabelIndex: readSettingProvider.isLight ? 1 : 0,
+                initialLabelIndex: watchSettingProvider.isLight ? 1 : 0,
                 cornerRadius: 20.0,
                 activeFgColor: Colors.white,
                 inactiveBgColor: Colors.grey,
@@ -98,7 +98,7 @@ class SettingScreen extends StatelessWidget {
                 ],
                 iconSize: 30.0,
                 activeBgColors: const [
-                  [Colors.black45, Colors.black],
+                  [Colors.black45, AppStyles.blackColor],
                   [Colors.yellow, Colors.orange]
                 ],
                 animationDuration: 100,

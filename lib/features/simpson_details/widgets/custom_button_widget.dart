@@ -27,7 +27,7 @@ class CustomButtonWidget extends StatelessWidget {
       required this.title,
       required this.submitFunction,
       this.colorText = AppStyles.green900Color,
-      this.colorBg = AppStyles.lightGreenColor,
+      this.colorBg = AppStyles.lightGreen500Color,
       this.borderSide,
       this.elevation = 0,
       this.height = 48,

@@ -37,7 +37,7 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Colors.red,
+          backgroundColor: AppStyles.error500Color,
           duration: const Duration(seconds: 3),
           content: SizedBox(
             width: double.infinity,
@@ -73,16 +73,43 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
                       focusNode: simpsonProviderRead.focusNode,
                       onTapOutside: (event) =>
                           simpsonProviderRead.focusNode.unfocus(),
-                      hint: settingProviderWatch.isSpanish
+                      hint: settingProviderRead.isSpanish
                           ? 'Buscar personaje...'
                           : 'Search character...',
                     ),
                     const SizedBox(
                       height: 10,
                     ),
+                    if (simpsonProviderWatch.searchSimpsons.isEmpty) ...[
+                      Text(
+                        settingProviderWatch.isSpanish
+                            ? 'No se encontró ningún personaje'
+                            : 'No character found',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppStyles.gray500Color,
+                              spreadRadius: 0.1,
+                              blurRadius: 0.1,
+                              offset:
+                                  Offset(0, 2), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Image.asset('assets/img/error-image.jpg'),
+                      )
+                    ],
                     Expanded(
                       child: MasonryGridView.count(
-                        itemCount: simpsonProviderRead.searchSimpsons.length,
+                        itemCount: simpsonProviderWatch.searchSimpsons.length,
                         crossAxisCount: 3,
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10,
@@ -95,11 +122,11 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
                                   height: 40,
                                 ),
                                 _SimpsonCardWidget(
-                                  character:
-                                      simpsonProviderRead.searchSimpsons[index],
+                                  character: simpsonProviderWatch
+                                      .searchSimpsons[index],
                                 ),
                                 if (index ==
-                                    simpsonProviderRead.searchSimpsons.length -
+                                    simpsonProviderWatch.searchSimpsons.length -
                                         1)
                                   const SizedBox(
                                     height: 10,
@@ -113,10 +140,11 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
                             children: [
                               _SimpsonCardWidget(
                                 character:
-                                    simpsonProviderRead.searchSimpsons[index],
+                                    simpsonProviderWatch.searchSimpsons[index],
                               ),
                               if (index ==
-                                  simpsonProviderRead.searchSimpsons.length - 1)
+                                  simpsonProviderWatch.searchSimpsons.length -
+                                      1)
                                 const SizedBox(
                                   height: 10,
                                 )

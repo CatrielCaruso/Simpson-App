@@ -19,6 +19,7 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   late final favoriteProviderRead = context.read<FavoriteProvider>();
   late final favoriteProviderWatch = context.watch<FavoriteProvider>();
+  late SettingProvider settingProviderWatch = context.watch<SettingProvider>();
 
   @override
   void initState() {
@@ -36,28 +37,49 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   color: AppStyles.lightGreen500Color,
                 ),
               )
-            : Padding(
-                padding: const EdgeInsets.only(
-                  top: 10,
-                  right: 10,
-                  left: 10,
-                ),
-                child: MasonryGridView.count(
-                    itemCount: favoriteProviderRead.characters.length,
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SimpsonFavoriteCardWidget(
-                            character: favoriteProviderRead.characters[index],
-                          ),
-                        ],
-                      );
-                    }),
-              ),
+            : favoriteProviderWatch.characters.isEmpty
+                ? SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          settingProviderWatch.isSpanish
+                              ? 'Aún no tiene favoritos seleccionados'
+                              : 'You do not have favorites selected yet',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      right: 10,
+                      left: 10,
+                    ),
+                    child: MasonryGridView.count(
+                        itemCount: favoriteProviderWatch.characters.length,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              SimpsonFavoriteCardWidget(
+                                character:
+                                    favoriteProviderWatch.characters[index],
+                              ),
+                            ],
+                          );
+                        }),
+                  ),
       ),
     );
   }
@@ -73,7 +95,7 @@ class SimpsonFavoriteCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SettingProvider watchSettingProvider = context.watch<SettingProvider>();
+    SettingProvider settingProviderWatch = context.watch<SettingProvider>();
     late final favoriteProviderRead = context.read<FavoriteProvider>();
     return GestureDetector(
       onTap: () => Navigator.push(
@@ -88,7 +110,7 @@ class SimpsonFavoriteCardWidget extends StatelessWidget {
       child: Container(
         height: 200,
         decoration: BoxDecoration(
-          color: watchSettingProvider.isLight
+          color: settingProviderWatch.isLight
               ? AppStyles.gray200Color
               : AppStyles.lightGreen500Color,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -128,7 +150,7 @@ class SimpsonFavoriteCardWidget extends StatelessWidget {
                 ),
                 child: const Icon(
                   Icons.favorite,
-                  color: Colors.red,
+                  color: AppStyles.error500Color,
                   size: 15,
                 ),
               ),

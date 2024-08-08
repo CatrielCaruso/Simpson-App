@@ -22,8 +22,12 @@ class AppStyles {
   static const lightBlue300Color = Color(0xff4FC3F7);
   static const lightGreen700Color = Color(0xff4C8C2E);
   static const whiteColor = Color(0xffFFFFFF);
+  static const blackColor = Color(0xff000000);
   static const yellowSimpson = Color(0xffFFD90F);
-  static const hintColor=Color.fromRGBO(0, 0, 0, 0.62);
+  static const hintColor = Color.fromRGBO(0, 0, 0, 0.62);
+  static const baseColor = Color(0xffCDCFD0);
+  static const error500Color = Color(0xffD32C12);
+  static const overlayColor = Color(0xff000000);
 
   /// Family font
   static const fontFamilyFranklin = 'Franklin';

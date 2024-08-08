@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpsons_app/core/database/isar.database.dart';
 import 'package:translator/translator.dart';
+import 'package:share_plus/share_plus.dart';
 
+import 'package:simpsons_app/core/theme/app_styles.dart';
 import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
 
 class SimpsonDetailsProvider extends ChangeNotifier {
@@ -56,5 +58,28 @@ class SimpsonDetailsProvider extends ChangeNotifier {
         characterId: characterId);
     simpson.isFavorite = isFavorite;
     notifyListeners();
+  }
+
+  Future<void> shareText(
+      {required BuildContext context,
+      required String text,
+      required bool isSpanish}) async {
+    try {
+      await Share.share(text);
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+          backgroundColor: AppStyles.error500Color,
+          duration:const  Duration(seconds: 3),
+          content: SizedBox(
+            width: double.infinity,
+            child: Text(isSpanish
+                ? 'Error al cargar los datos, intentelo más tarde.'
+                : 'Error loading data, please try again later.'),
+          ),
+        ),
+      );
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,11 @@ Future<void> main() async {
   await dotenv.load(fileName: "envs/.env");
   serviceLocatorInit();
   await Preferences.init();
-  runApp(const MyApp());
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -47,6 +52,12 @@ class MyApp extends StatelessWidget {
       child: Builder(builder: (context) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
+          builder: (BuildContext context, Widget? widget) => MediaQuery(
+            data: MediaQuery.of(context) // Override device text scale factor
+                .copyWith(
+                    textScaler: TextScaler.noScaling, devicePixelRatio: 1),
+            child: widget!,
+          ),
           title: 'Material App',
           theme: context.watch<SettingProvider>().isLight
               ? AppTheme().getLightTheme()

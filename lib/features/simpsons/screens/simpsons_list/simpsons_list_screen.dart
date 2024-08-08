@@ -71,6 +71,7 @@ class _SimpsonListScreenState extends State<SimpsonListScreen> {
                     InputSearchWidget(
                       onSearch: simpsonProviderRead.onSearchClient,
                       focusNode: simpsonProviderRead.focusNode,
+                      constroller: simpsonProviderWatch.textController,
                       onTapOutside: (event) =>
                           simpsonProviderRead.focusNode.unfocus(),
                       hint: settingProviderRead.isSpanish

@@ -7,6 +7,7 @@ import 'package:simpsons_app/features/simpsons/models/simpson_model.dart';
 
 class SimpsonProvider extends ChangeNotifier {
   final _simpsonServices = GetIt.I<SimpsonServices>();
+  TextEditingController textController = TextEditingController();
 
   late SimpsonModel simpson;
   List<SimpsonModel> characters = [];
@@ -19,6 +20,7 @@ class SimpsonProvider extends ChangeNotifier {
 
   Future<void> getSimponsList() async {
     try {
+      textController.text=searchText;
       if (characters.isNotEmpty) return;
       isLoading = true;
 
